@@ -1,0 +1,52 @@
+<div class="assignment-wrapper" [class.form-locked]="form().disabled()">
+  <div class="actions-bar">
+    <button (click)="onAddNewSection()" class="app-cmp-button app-cl-filled">
+      <span class="material-symbols-outlined">add</span>
+      New Section
+    </button>
+  </div>
+
+  <div class="sections-list">
+    @for (sectionNode of form; track sectionNode) {
+      <div class="section-box">
+        <header class="section-header">
+          <div class="title-info">
+            <span class="label">Section</span>
+            <span class="number-badge">{{ $index + 1 }}</span>
+          </div>
+
+          <div class="header-buttons">
+            <button (click)="onAddNumber(sectionNode)" class="app-cmp-button">
+              <span class="material-symbols-outlined">add</span>
+            </button>
+            <button [disabled]="$count === 1" (click)="onRemoveSection($index)"
+                    class="app-cmp-button app-cl-warn">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="inputs-grid">
+          @for (numField of sectionNode; track numField) {
+            <div class="input-item">
+              <label>No. {{ $index + 1 }}</label>
+              <div class="field-group">
+                <input type="number"
+                       [value]="numField().value()"
+                       (input)="updateValue(numField, $event)" />
+                <button [disabled]="$count === 1" (click)="onRemoveNumber(sectionNode, $index)">
+                  <span class="material-symbols-outlined">remove</span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <footer class="section-footer">
+          <span class="result-text">Section Summary</span>
+          <span class="result-value">{{ sectionNode().metadata(totalKey)!() | number }}</span>
+        </footer>
+      </div>
+    }
+  </div>
+</div>
