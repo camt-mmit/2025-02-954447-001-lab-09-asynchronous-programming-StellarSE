@@ -1,0 +1,88 @@
+<div class="_opening-crawl-container">
+  <div class="_crawl-fade-top"></div>
+  <div class="_crawl-scene">
+    <div class="_crawl-text">
+      <p class="_crawl-intro">A long time ago in a galaxy far,<br />far away....</p>
+      <div class="_crawl-body">
+        <h2 class="_crawl-episode">EPISODE {{ data().episode_id }}</h2>
+        <h1 class="_crawl-title">{{ data().title }}</h1>
+        <p>{{ data().opening_crawl }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+<dl class="_data-view">
+  <dt>Title</dt>
+  <dd>
+    <a
+      href="https://www.google.com/search?q={{ data().title }}+Star+Wars"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="app-cmp-link"
+    >{{ data().title }} <i class="material-symbols-outlined" style="font-size:1em;vertical-align:middle">open_in_new</i></a>
+  </dd>
+
+  <dt>Episode ID</dt>
+  <dd>{{ data().episode_id }}</dd>
+
+  <dt>Opening Crawl</dt>
+  <dd class="_opening-crawl">{{ data().opening_crawl }}</dd>
+
+  <dt>Director</dt>
+  <dd>{{ data().director }}</dd>
+
+  <dt>Producer</dt>
+  <dd>{{ data().producer }}</dd>
+
+  <dt>Release Date</dt>
+  <dd>{{ data().release_date | date }}</dd>
+
+  <dt>Characters</dt>
+  <dd>
+    <ul>
+      @for (character$ of asyncData().characters; track character$) {
+        @if (character$ | async; as character) {
+          <li>
+            <a
+              [routerLink]="['people', character.url | extractId]"
+              [relativeTo]="moduleRoute()"
+              class="app-cmp-link"
+              >{{ character.name }}</a
+            >
+          </li>
+        } @else {
+          <li><span class="_status-loading">Loading</span></li>
+        }
+      }
+    </ul>
+  </dd>
+
+  <dt>Planets</dt>
+  <dd>
+    <ul>
+      @for (planet$ of asyncData().planets; track planet$) {
+        @if (planet$ | async; as planet) {
+          <li>
+            <a
+              [routerLink]="['planets', planet.url | extractId]"
+              [relativeTo]="moduleRoute()"
+              class="app-cmp-link"
+              >{{ planet.name }}</a
+            >
+          </li>
+        } @else {
+          <li><span class="_status-loading">Loading</span></li>
+        }
+      }
+    </ul>
+  </dd>
+
+  <dt>Created</dt>
+  <dd>{{ data().created | date }}</dd>
+
+  <dt>Edited</dt>
+  <dd>{{ data().edited | date }}</dd>
+</dl>
+<hr />

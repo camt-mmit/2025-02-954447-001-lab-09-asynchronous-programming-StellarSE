@@ -1,0 +1,23 @@
+@use '../../scss/common';
+@use '../../scss/data';
+@use '../../scss/status';
+
+:host {
+  @include common.layout-block();
+
+  @layer {
+    & {
+      --_warn-color: var(--app-warn-color);
+    }
+  }
+}
+
+._data-view {
+  @include data.layout-data-view();
+
+  dt {
+    color: #FFE81F;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+  }
+}

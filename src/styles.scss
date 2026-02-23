@@ -1,27 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+/* Star Wars Theme */
 @use './scss/common';
+@use './scss/material';
 
 // Material Symbols
 .material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
+  font-variation-settings: var(--app-icon-variation);
 }
 
 :root {
-  // == Static Properties ==================================================
-  --sys-brand-primary-color: #0000ff;
-  --sys-brand-secondary-color: #00ff00;
+  // == Star Wars Color Palette ==================================================
+  --sys-brand-primary-color: #FFE81F;    // Star Wars yellow
+  --sys-brand-secondary-color: #4fc3f7;  // Lightsaber blue
 
   --sys-font: 'Roboto Flex', 'Noto Sans Thai Looped', sans-serif;
   --sys-monospace-font: 'Roboto Mono', monospace;
+  --sys-font-size: 16px;
 
-  --sys-surface-color: light-dark(#ffffff, #121212);
-  --sys-surface-container-color: light-dark(#808080, #404040);
-  --sys-on-surface-color: light-dark(#333333, #ffffff);
-  --sys-warn-color: #ff0000;
+  // Dark space background
+  --sys-surface-color: #0a0a0f;
+  --sys-surface-container-color: #1a1a2e;
+  --sys-on-surface-color: #e8e8e8;
+  --sys-warn-color: #ff4444;
   --sys-on-warn-color: #ffffff;
 
   --sys-gap: 4px;
@@ -29,21 +28,18 @@
   --sys-row-gap: var(--sys-gap);
 
   // ---- Theme Properties --------------------------------------------------
-  --sys-primary-color: light-dark(
-    var(--sys-brand-primary-color),
-    color-mix(in srgb, var(--sys-brand-primary-color), #ffffff 25%)
-  );
-  --sys-on-primary-color: #ffffff;
+  --sys-primary-color: var(--sys-brand-primary-color);
+  --sys-on-primary-color: #000000;
 
-  --sys-secondary-color: light-dark(
-    var(--sys-brand-secondary-color),
-    color-mix(in srgb, var(--sys-brand-secondary-color), #ffffff 25%)
-  );
-  --sys-on-secondary-color: #ffffff;
+  --sys-secondary-color: var(--sys-brand-secondary-color);
+  --sys-on-secondary-color: #000000;
+
+  --sys-icon-variation: #{material.appearance()};
 
   // == Application properties ==================================================
   --app-font: var(--sys-font);
   --app-monospace-font: var(--sys-monospace-font);
+  --app-font-size: var(--sys-font-size);
 
   --app-surface-color: var(--sys-surface-color);
   --app-surface-container-color: var(--sys-surface-container-color);
@@ -55,43 +51,52 @@
   --app-column-gap: var(--sys-column-gap);
   --app-row-gap: var(--sys-row-gap);
 
-  // ---- Theme Properties --------------------------------------------------
   --app-primary-color: var(--sys-primary-color);
   --app-on-primary-color: var(--sys-on-primary-color);
 
   --app-secondary-color: var(--sys-secondary-color);
   --app-on-secondary-color: var(--sys-on-secondary-color);
 
-  color-scheme: light dark;
+  --app-icon-variation: var(--sys-icon-variation);
 
+  color-scheme: dark;
   color: var(--app-on-surface-color);
   background-color: var(--app-surface-color);
 
   font-family: var(--app-font);
   font-size: 16px;
-
   scroll-behavior: smooth;
   overflow-y: scroll;
 
-  &[data-theme='light'] {
-    color-scheme: light;
-  }
-
-  &[data-theme='dark'] {
-    color-scheme: dark;
-  }
+  // Star field background
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 232, 31, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(79, 195, 247, 0.03) 0%, transparent 50%);
 }
 
 :root,
 body {
   @include common.layout-block();
-
   height: 100%;
 }
 
 input,
 textarea {
   font-size: inherit;
+  background-color: #0d0d1a;
+  color: #e8e8e8;
+  border: 1px solid #FFE81F44;
+  border-radius: 4px;
+  padding: 0.4em 0.8em;
+
+  &:focus {
+    outline: 1px solid #FFE81F;
+    border-color: #FFE81F;
+  }
+
+  &::placeholder {
+    color: #666;
+  }
 }
 
 .app-cl-hidden {
@@ -110,7 +115,6 @@ textarea {
 
   & > .app-cl-meta {
     @include common.layout-block();
-
     display: inline-block;
     margin-left: auto;
   }
@@ -121,12 +125,10 @@ textarea {
     & {
       --_color: var(--app-primary-color);
       --_on-color: var(--app-on-primary-color);
-
       --_text-color: var(--_color);
       --_border-color: var(--_text-color);
-      --_background-color: transpalent;
-      --_on-hover-background-color: var(--app-surface-container-color);
-
+      --_background-color: transparent;
+      --_on-hover-background-color: rgba(255, 232, 31, 0.15);
       --_border-style: 1px solid var(--_border-color);
 
       &.app-cl-filled {
@@ -147,23 +149,27 @@ textarea {
   align-items: center;
   justify-content: center;
   column-gap: 4px;
-
   cursor: pointer;
 
   color: var(--_text-color);
   background-color: var(--_background-color);
   border: var(--_border-style);
   border-radius: 4px;
-
   padding: 0.5em 1ch;
 
+  font-family: var(--app-font);
+  font-size: var(--app-font-size);
   font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: background-color 0.2s, box-shadow 0.2s;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:is(:disabled, a:not([href]))) {
     background-color: var(--_on-hover-background-color);
+    box-shadow: 0 0 8px rgba(255, 232, 31, 0.3);
   }
 
-  &:disabled {
+  &:is(:disabled, a:not([href])) {
     opacity: 0.25;
     cursor: not-allowed;
   }
@@ -172,16 +178,16 @@ textarea {
 .app-cmp-nav {
   @layer {
     & {
+      --_font: var(--app-font);
+      --_font-size: var(--app-font-size);
       --_color: var(--app-primary-color);
       --_on-color: var(--app-on-primary-color);
-
       --_text-color: var(--_color);
       --_border-color: var(--_text-color);
-      --_background-color: transpalent;
-      --_filling-color: var(--app-surface-container-color);
+      --_background-color: transparent;
+      --_filling-color: rgba(255, 232, 31, 0.2);
       --_column-gap: var(--app-column-gap);
       --_row-gap: var(--app-row-gap);
-
       --_border-style: 1px solid var(--_border-color);
 
       &.app-cl-filled {
@@ -210,29 +216,13 @@ textarea {
 
   margin-top: 8px;
   margin-bottom: 8px;
-
   list-style: none;
 
   & > * {
     @include common.layout-block();
-
     display: inline-block;
 
-    color: var(--_text-color);
-    font-weight: bold;
-    border: var(--_border-style);
-    border-radius: 4px;
-    overflow: hidden;
-
-    &.app-st-active {
-      background-color: var(--_filling-color);
-    }
-
-    &:not(.app-st-active):hover {
-      background-color: color(from var(--_filling-color) srgb r g b / 0.5);
-    }
-
-    & > a {
+    & > :is(a, button) {
       @include common.layout-block();
 
       display: inline-flex;
@@ -241,13 +231,76 @@ textarea {
       column-gap: var(--_column-gap);
 
       height: 100%;
-
       padding: 0.25em 1ch;
+      cursor: pointer;
 
-      color: inherit;
+      color: var(--_text-color);
+      background-color: var(--_background-color);
+
+      font-family: var(--_font);
+      font-size: var(--_font-size);
+      font-weight: bold;
+      border: var(--_border-style);
+      border-radius: 4px;
+      overflow: hidden;
       text-decoration: none;
       white-space: nowrap;
+      transition: background-color 0.2s, box-shadow 0.2s;
     }
+
+    &.app-st-active {
+      & > :is(a, button) {
+        background-color: var(--_filling-color);
+        box-shadow: 0 0 10px rgba(255, 232, 31, 0.4);
+      }
+    }
+
+    &:hover:not(:is(.app-st-active, :has(> :is(a:not([href]), button:disabled)))) {
+      & > :is(a, button) {
+        background-color: color(from var(--_filling-color) srgb r g b / 0.5);
+        box-shadow: 0 0 6px rgba(255, 232, 31, 0.2);
+      }
+    }
+
+    &:has(> :is(a:not([href]), button:disabled)) {
+      & > :is(a, button) {
+        opacity: 0.25;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.app-cmp-link {
+  @layer {
+    & {
+      --_color: #4fc3f7;
+      --_on-hover-background-color: rgba(79, 195, 247, 0.1);
+      --_icon-variation: var(--app-icon-variation);
+      --_forground-color: color-mix(in srgb, var(--_color), var(--app-surface-color));
+    }
+  }
+
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--_forground-color);
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
+
+  &::after {
+    content: 'link';
+    @include material.set-symbol();
+    font-size: inherit !important;
+    transform: translateY(20%);
+    margin-left: 0.5ch;
+  }
+
+  &:hover {
+    color: var(--_color);
+    background-color: var(--_on-hover-background-color);
   }
 }
 
@@ -277,7 +330,13 @@ input[type='number'],
     --_text-color: var(--_on-color);
     --_border-color: transparent;
     --_background-color: var(--_color);
-
     --_border-style: 0px solid var(--_border-color);
   }
+}
+
+// Star Wars decorative separator
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 232, 31, 0.2);
+  margin: 1rem 0;
 }
